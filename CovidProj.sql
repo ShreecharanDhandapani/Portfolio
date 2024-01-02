@@ -2,9 +2,9 @@ Select *
 From [Portfolio Project]..CovidDeaths$
 order by 3,4
 
---Select *
---From [Portfolio Project]..CovidVaccinations$
---order by 3,4
+Select *
+From [Portfolio Project]..CovidVaccinations$
+order by 3,4
 
 Select location, date, total_cases, new_cases, total_deaths, population
 From [Portfolio Project]..CovidDeaths$
@@ -24,7 +24,7 @@ From [Portfolio Project]..CovidDeaths$
 where location like '%Italy%'
 order by 1,2
 
--- countires with highest infection rate vs population
+-- countries with highest infection rate vs population
 Select location, population, MAX(convert(float,total_cases)) as HighestInfectionCount, Max((convert(float,total_cases)/population))*100 as PercentPopulationInfected
 From [Portfolio Project]..CovidDeaths$
 --where location like '%Italy%'
@@ -48,8 +48,7 @@ where continent is not null
 group by continent
 order by TotalDeathCount desc
 
--- loking at total population vs vaccinations - CTE
-
+-- looking at total population vs vaccinations
 
 select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 ,SUM(CONVERT(float, vac.new_vaccinations)) OVER (Partition by dea.location order by dea.location, dea.date)
@@ -61,7 +60,7 @@ Join [Portfolio Project]..CovidVaccinations$ vac
 where dea.continent is not null
 order by 2,3
 
--- with CTE
+-- using CTE
 
 With PopulationVsVac(continent, Location, Date, Population, new_vaccinations, RollingPeopleVaccinated)
 as
@@ -78,7 +77,7 @@ where dea.continent is not null
 Select *, (RollingPeopleVaccinated/Population)*100
 From PopulationVsVac
 
---Temp table
+-- using Temp table
 
 Drop table if exists #PercentPopulationVaccinated
 Create Table #PercentPopulationVaccinated
